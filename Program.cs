@@ -1,5 +1,7 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using _AdventOfCode.AOC2023;
 
-var lines = AOC2023.Reader();
+Console.WriteLine("Lets go...");
 
-AOC2023.Day1(lines);
+var lines = CoreFunctions.Reader();
+
+Day1.Run(lines);
