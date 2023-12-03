@@ -4,4 +4,4 @@ Console.WriteLine("Lets go...");
 
 var lines = CoreFunctions.Reader();
 
-Day1.Run(lines);
+Day2.Run(lines);
