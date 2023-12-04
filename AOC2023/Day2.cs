@@ -1,4 +1,6 @@
-﻿namespace _AdventOfCode.AOC2023
+﻿using System.Text.RegularExpressions;
+
+namespace _AdventOfCode.AOC2023
 {
     public static class Day2
     {
@@ -10,18 +12,50 @@
 
             foreach(string line in lines)
             {
-                var split1 = line.Split(':');
-                var split2 = split1[0].split(' ');
-                var gameNo = split2[1];
+                // match first digit as game number
+                var gameNo = Regex.Match(line, "(\\d)");
 
-                var draws = split1[1].split(";");
+                var draws = line.Split(':')[1];
+
+                var drawlist = draws.Split(";");
+
+                var redMax = 0;
+                var blueMax = 0;
+                var greenMax = 0;
 
 
+                foreach( var draw in drawlist) {
 
+                    var split = draw.Trim().Split(',');
+                    
+                    foreach( var draw2 in split) {
+                        var split2 = draw2.Trim().Split(" ");
+
+                        switch (split2[1])
+                        {
+                            case "blue":
+                                var blueCount = int.Parse(split2[0]);
+                                if (blueCount > blueMax) blueMax = blueCount;
+                                break;
+                            case "red":
+                                var redCount = int.Parse(split2[0]);
+                                if (redCount > redMax) redMax = redCount;
+                                break;
+                            case "green":
+                                var greenCount = int.Parse(split2[0]);
+                                if (greenCount > greenMax) greenMax = greenCount;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                var power = redMax * blueMax * greenMax;
+
+                answer += power;
 
             }
-
-            
 
             Console.WriteLine("answer: " + answer);
         }
