@@ -1,74 +1,70 @@
 ﻿using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace _AdventOfCode.AOC2023
 {
     public static class Day3
     {
-        public static void Run(List<string> lines)
+        public static void Run(List<string> inputLines)
         {
             Console.WriteLine("AOC 2023 Day 2");
 
-            int answer = 0;            
+            var symbols = new List<Symbol>();
+            var numbers = new List<Number>();
 
-            for (int i = 0; i < lines.Count; i++)
+            var numberRegex = new Regex(@"(\d)+");
+            var symbolRegex = new Regex(@"[^\.\d\n]");
+
+            var lineNum = 0;
+            foreach (var line in inputLines)
             {
+                foreach (Match nm in numberRegex.Matches(line))
+                    numbers.Add(new Number(
+                        Value: int.Parse(nm.Value),
+                        Pos: new Pos(lineNum, nm.Index, nm.Index + nm.Length - 1)));
 
-                string preLine, postLine;
+                foreach (Match sm in symbolRegex.Matches(line))
+                    symbols.Add(new Symbol(
+                        Value: sm.Value,
+                        Pos: new Pos(lineNum, sm.Index, sm.Index)));
 
-                if (i == 0)
-                {
-                    preLine = new string('.', lines[i].Length);
-                }
-                else
-                { 
-                    preLine = lines[i-1];
-                }
-                
-                var testline = lines[i];
-                
-                if (i == lines.Count - 1 )
-                {
-                    postLine = new string('.', lines[i].Length);
-                }
-                else
-                {
-                    postLine = lines[i +1 ];
-                }
-
-                var matches = Regex.Matches(testline, @"\d+").Select(m => new KeyValuePair<int, int>(m.Index, int.Parse(m.Value))).ToArray();
-
-                foreach (var match in matches)
-                {
-
-                    var startIndex = match.Key == 0 ? 0 : match.Key - 1;
-                    //var endIndex = match.Key + match.Value.ToString().Length + 1 == testline.Length ? 1 : 2;
-                    var endIndex = 2;
-                    if (startIndex == 0) endIndex = 1;
-                    if (match.Key + match.Value.ToString().Length == testline.Length) endIndex = 1;
-
-                    var a = testline.Length;
-                    var b = match.Key + match.Value.ToString().Length;
-
-                    var prelineTest = preLine.Substring(startIndex, match.Value.ToString().Length + endIndex);
-                    var testlineTest = testline.Substring(startIndex, match.Value.ToString().Length + endIndex);
-                    var postlineTest = postLine.Substring(startIndex, match.Value.ToString().Length + endIndex);
-
-                    var isIncluded = false;
-
-                    if(Regex.Match(prelineTest, @"[^a-zA-Z\d.:]").Success) isIncluded = true;
-                    if (Regex.Match(testlineTest, @"[^a-zA-Z\d.:]").Success) isIncluded = true;
-                    if (Regex.Match(postlineTest, @"[^a-zA-Z\d.:]").Success) isIncluded = true;
-
-                    if (isIncluded) answer += match.Value;
-                    if (!isIncluded)
-                    {
-                        var ln = i;
-                        var blah = "blah";
-                    }
-                }
+                lineNum++;
             }
 
-            Console.WriteLine("answer: " + answer);
+            var partSum = numbers
+                .Where(n => symbols.Any(s => s.Pos.IsAdjacent(n)))
+                .Sum(n => n.Value);
+
+            var ratio = symbols
+                .Where(s => s.Value is "*")
+                .Sum(g =>
+                {
+                    var adjacentNumbers = numbers
+                        .Where(n => g.Pos.IsAdjacent(n))
+                        .ToList();
+                    return adjacentNumbers.Count == 2
+                        ? adjacentNumbers.Aggregate(1, (acc, n) => acc * n.Value)
+                        : 0;
+                });
+
+            Console.WriteLine($"Part 1 answer: {partSum}");
+            Console.WriteLine($"Part 2 answer: {ratio}");
         }
+
+        record Pos(int Row, int ColStart, int ColEnd)
+        {
+            public bool IsAdjacent(Number number)
+            {
+                // same row, directly above or below
+                if (Row < number.Pos.Row - 1 || Row > number.Pos.Row + 1)
+                    return false;
+                // within or directly adjacent to the number's column range
+                return ColStart >= number.Pos.ColStart - 1 && ColStart <= number.Pos.ColEnd + 1;
+            }
+        };
+
+        record Symbol(string Value, Pos Pos);
+
+        record Number(int Value, Pos Pos);
     }
 }

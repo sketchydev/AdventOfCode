@@ -14,7 +14,14 @@ namespace _AdventOfCode.AOC2023
 
             var seeds = Regex.Matches(linesArr[0], @"\d+").Cast<Match>().Select(m=> long.Parse(m.Value)).ToList();
 
-            var sectionHeadNames = new[] { "seed-to-soil map:", "soil-to-fertilizer map:", "fertilizer-to-water map:", "water-to-light map:", "light-to-temperature map:", "temperature-to-humidity map:", "humidity-to-location map:" };
+            var sectionHeadNames = new[] { 
+                "seed-to-soil map:", 
+                "soil-to-fertilizer map:", 
+                "fertilizer-to-water map:", 
+                "water-to-light map:", 
+                "light-to-temperature map:", 
+                "temperature-to-humidity map:", 
+                "humidity-to-location map:" };
             
             var SectionHeadIndexes = new Dictionary<string, int>();
 
@@ -23,7 +30,13 @@ namespace _AdventOfCode.AOC2023
                 SectionHeadIndexes.Add(name, Array.IndexOf(linesArr,name));
             }
 
-            
+            var map1 = GenerateMap(SectionHeadIndexes["seed-to-soil map:"], linesArr);
+            var map2 = GenerateMap(SectionHeadIndexes["soil-to-fertilizer map:"], linesArr);
+            var map3 = GenerateMap(SectionHeadIndexes["fertilizer-to-water map:"], linesArr);
+            var map4 = GenerateMap(SectionHeadIndexes["water-to-light map:"], linesArr);
+            var map5 = GenerateMap(SectionHeadIndexes["light-to-temperature map:"], linesArr);
+            var map6 = GenerateMap(SectionHeadIndexes["temperature-to-humidity map:"], linesArr);
+            var map7 = GenerateMap(SectionHeadIndexes["humidity-to-location map:"], linesArr);
 
 
             Console.WriteLine("answer: " + answer);
