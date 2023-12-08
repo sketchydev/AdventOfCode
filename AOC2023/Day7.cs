@@ -62,25 +62,16 @@ namespace _AdventOfCode.AOC2023
                     //Try all combinations to get the best score
 
                     var bestscore = 0;
-
                     var startingCombinations = new List<string> {hand.Cards };
-
                     var combinations = GetCombinations(startingCombinations, cardScores);
-
-                                        
-
+                                     
                     foreach (var combo in combinations)
                     {
                         var score = BaseScore(combo);
                         if(score>bestscore) bestscore = score;
                     }
-
-
-
                     hand.HandScore = bestscore;
                 }
-
-
 
                 hands.Add(hand);
             }
