@@ -1,4 +1,6 @@
-﻿public static class CoreFunctions
+﻿using System.Drawing;
+
+public static class CoreFunctions
 {
     public static List<string> Reader()
     {
@@ -19,6 +21,12 @@
 
         return lines;
     }
+
+    public static double GetDistance(Point a, Point b)
+    {
+        return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+    }
+
 }
     public class LCM {
 
