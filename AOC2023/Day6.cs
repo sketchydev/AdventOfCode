@@ -25,23 +25,16 @@ namespace _AdventOfCode.AOC2023
 
             foreach (var race in races)
             {
-
-                long winninginwWays = 0;
-
-                long speed = 0;
+                long winninginwWays = 0;                
 
                 for (long i = 1; i < race[0] + 1; i++)
-                {
-                    var startSpeed = i;
+                {                    
+                    var remainingTime = race[0] - i;                    
 
-                    var remainingTime = race[0] - startSpeed;
-
-                    var distance = startSpeed * remainingTime;
-
-                    if (distance > race[1]) winninginwWays++;
+                    if (i * remainingTime > race[1]) winninginwWays++;
                 }
 
-                if (winninginwWays > 0) answer = answer * winninginwWays;
+                if (winninginwWays > 0) answer *= winninginwWays;
             }
 
 
