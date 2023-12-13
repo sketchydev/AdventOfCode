@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace _AdventOfCode.AOC2023
@@ -9,20 +10,117 @@ namespace _AdventOfCode.AOC2023
         {
             Console.WriteLine("AOC 2023 Day 2");
 
-            int answer = 0;
+            var part1 = Part1(lines);
+            var part2 = Part2(lines);
+
+
+            Console.WriteLine($"Part 1: [{part1}]");
+            Console.WriteLine($"Part 2: [{part2}]");
+
+        }
+
+        public static long GetDistance(Point start, Point end)
+        {
+            long dist = 0;
+            
+            var xDist = Math.Abs(start.X - end.X);
+            var yDist = Math.Abs(start.Y - end.Y);
+
+            dist += xDist;
+            dist += yDist;
+            
+            return dist;
+        }        
+
+        public static long Part2(List<string> lines)
+        {
+            long distSum = 0;
+
+            int expandBy = 999999; //2 == 1x2
+
+            var emptyRows = new List<int>();
+            var emptyCols = new List<int>();
+
+            var linesArr = lines.ToArray();
+
+            for (int i = 0; i < linesArr.Length; i++)
+            {
+                if (lines[i].All(c => c == '.'))
+                {
+                    emptyRows.Add(i);
+                }
+            }
+
+            for (var i = 0; i < linesArr[0].Length; i++)
+            {
+                var isMatch = true;
+
+                for (var j = 0; j < linesArr.Length; j++)
+                {
+                    if (linesArr[j][i] == '#')
+                    {
+                        isMatch = false;
+                        break;
+                    }
+                }
+                if (isMatch) { emptyCols.Add(i); }
+
+            }
+
+            var coords = new Dictionary<int, Point>();
+            var count = 0;
+
+            for (var i = 0; i < linesArr.Length; i++)
+            {
+                for (var j = 0; j < linesArr[0].Length; j++)
+                {
+                    if (linesArr[i][j] == '#')
+                    {
+                        count++;
+
+
+                        var colsExtra = emptyCols.Where(c => c < j).Count() * expandBy;
+                        var rowsExtra = emptyRows.Where(c => c < i).Count() * expandBy;
+
+                        var realX = j + colsExtra;
+                        var realY = i + rowsExtra;
+
+                        coords.Add(count, new Point(realX, realY));
+                    }
+                }
+                Console.WriteLine(linesArr[i]);
+            }
+
+            for (var i = 1; i < coords.Count; i++)
+            {
+                var start = coords[i];
+
+                for (var j = i + 1; j <= coords.Count; j++)
+                {
+                    long dist = GetDistance(start, coords[j]);
+                    Console.WriteLine($"[{i}->{j}] : [{dist}]");
+                    distSum += dist;
+                }
+
+            }
+
+            return distSum;
+        }
+
+        public static long Part1(List<string> lines)
+        {            
 
             var linesList = new List<string>();
-
-            var expansionFactor = 10;
+            
 
             foreach (string line in lines)
             {
 
-                if (line.All(c => c == '.')) linesList.Add(line);
-                for (int i = 1; i <= expansionFactor; i++)
-                {
-                    linesList.Add(line);
+                if (line.All(c => c == '.'))
+                {                    
+                  linesList.Add(line);                 
                 }
+                linesList.Add(line);
 
             }
 
@@ -34,14 +132,16 @@ namespace _AdventOfCode.AOC2023
             {
                 var isMatch = true;
 
-                for (var j = 0; j < linesArr.Length; j++) {
+                for (var j = 0; j < linesArr.Length; j++)
+                {
                     if (linesArr[j][i] == '#')
                     {
                         isMatch = false;
                         break;
                     }
                 }
-                if (isMatch) { indexesToAdd.Add(i); }            
+                if (isMatch) { indexesToAdd.Add(i); }
+
             }
 
             indexesToAdd.Reverse();
@@ -50,62 +150,53 @@ namespace _AdventOfCode.AOC2023
                 for (var i = 0; i < linesArr.Length; i++)
                 {
                     var str = linesArr[i];
-                    for (int j = 1; j <= expansionFactor; j++)
-                    {
-                        str = str.Insert(index, ".");
-                    }
+                    str = str.Insert(index, ".");
+                    
                     linesArr[i] = str;
-                }                
+                    Console.Write($"\r[{i}]");
+
+                }
+                Console.Write($"\r[{index}]");
             }
+
 
             //finish expansion
 
             var coords = new Dictionary<int, Point>();
             var count = 0;
 
-            for (var i = 0; i< linesArr.Length; i++)
+            for (var i = 0; i < linesArr.Length; i++)
             {
-                for (var j = 0;j < linesArr[0].Length; j++) {
+                for (var j = 0; j < linesArr[0].Length; j++)
+                {
                     if (linesArr[i][j] == '#')
                     {
                         count++;
-                        coords.Add(count, new Point(i,j));
+                        coords.Add(count, new Point(i, j));
                     }
                 }
                 Console.WriteLine(linesArr[i]);
-            }   
-            
+            }
 
-            int distSum = 0;
+
+            long distSum = 0;
             for (var i = 1; i < coords.Count; i++)
             {
                 var start = coords[i];
 
-                for (var j = i+1;  j <= coords.Count; j++) {
-                    var dist = GetDistance2(start, coords[j]);
-                    Console.WriteLine($"[{i}->{j}] : [{dist}]");  
-                    distSum+= dist;
+                for (var j = i + 1; j <= coords.Count; j++)
+                {
+                    long dist = GetDistance(start, coords[j]);
+                    Console.WriteLine($"[{i}->{j}] : [{dist}]");
+                    distSum += dist;
                 }
 
             }
-                   
-            Console.WriteLine($"sum: [{distSum}]");
 
+            return distSum;
 
-            Console.WriteLine("answer: " + answer);
-        }
-
-        public static int GetDistance2(Point start, Point end)
-        {
-            int dist = 0;
-            
-            var xDist = Math.Abs(start.X - end.X);
-            var yDist = Math.Abs(start.Y - end.Y);
-
-            dist += xDist;
-            dist += yDist;
-            
-            return dist;
         }
     }    
 }
+
+
