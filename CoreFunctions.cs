@@ -22,10 +22,37 @@ public static class CoreFunctions
         return lines;
     }
 
+    public static List<string> ReadFile(string filename) {
+
+        var lines = new List<string>();
+
+        string dir = Path.GetDirectoryName(
+            System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+        string file = dir + filename;
+
+        var sr = new StreamReader(file);
+        
+        var line = sr.ReadLine();        
+        while (line != null)
+        {            
+            lines.Add(line);
+            
+            line = sr.ReadLine();
+        }
+        //close the file
+        sr.Close();
+        return lines;
+
+    }
+
+
+
     public static double GetDistance(Point a, Point b)
     {
         return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
     }
+
 
 }
     public class LCM {

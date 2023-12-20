@@ -2,7 +2,9 @@
 
 Console.WriteLine("Lets go...");
 
+//var lines = CoreFunctions.ReadFile(@"\inputfiles\day15.txt");
+
 var lines = CoreFunctions.Reader();
 
 
-Day11.Run(lines);
+Day19.Run(lines);
