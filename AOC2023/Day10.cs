@@ -51,14 +51,9 @@ namespace _AdventOfCode.AOC2023
             if (sCol > 0 && "-FL".Contains(linesArr[sRow][sCol-1])) 
                 startValidMoves = startValidMoves + "W";
 
-
-
-
             validMoves.Add('S',startValidMoves);
 
             linesArrCopy[sCol][sRow] = '$';
-
-
 
             var stepCounter = 0;
             char previousLoc = 'X';

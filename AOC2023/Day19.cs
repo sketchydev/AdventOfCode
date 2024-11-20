@@ -8,9 +8,7 @@ namespace _AdventOfCode.AOC2023
     {
         public static void Run(List<string> lines)
         {
-            Console.WriteLine("AOC 2023 Day 19");
-
-            long answer = 0;
+            Console.WriteLine("AOC 2023 Day 19");           
 
             var lineArr = lines.ToArray();
 
@@ -32,15 +30,53 @@ namespace _AdventOfCode.AOC2023
             }
 
             var parts = ParseParts(partsRaw);
+
             var workflows = ParseWorkflows(workflowsRaw);
 
-            foreach (var part in parts) {
+            long answerOne = PartOne(parts, workflows);
+            long answerTwo = PartTwo(workflows);
+
+
+
+
+            Console.WriteLine("answer P1: " + answerOne);
+            Console.WriteLine("answer P2: " + answerTwo);
+        }
+
+        public static long PartTwo(Dictionary<string, string> workflows)
+        {
+            long answer = 0;
+
+            var fullTree = new BinaryTree<string>();
+
+            var start = workflows["in"];
+
+
+
+
+
+
+
+            return answer;
+
+        }
+
+
+        public static long PartOne(List<int[]> parts, Dictionary<string, string> workflows)
+        { 
+            long answer = 0;
+
+            foreach (var part in parts)
+            {
                 answer += ApplyWorkflow(part, workflows);
             }
 
+            return answer;
 
-            Console.WriteLine("answer: " + answer);
         }
+        
+
+
 
         public static long ApplyWorkflow(int[] part, Dictionary<string, string> workflows)
         {
@@ -125,8 +161,7 @@ namespace _AdventOfCode.AOC2023
 
 
 
-            if (currentApp == "R") return 0;
-
+            if (currentApp == "R") return 0;            
             return part[0] + part[1] + part[2] + part[3];
 
         }
