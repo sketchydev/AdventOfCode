@@ -38,7 +38,11 @@
                     }
                 }
 
-                answer += int.Parse(numberIndexes.First().Value.ToString() + numberIndexes.Last().Value.ToString());
+                var x = int.Parse(numberIndexes.First().Value.ToString() + numberIndexes.Last().Value.ToString());
+
+                Console.WriteLine(x);
+
+                answer += x;
 
             }
 

@@ -1,10 +1,6 @@
-﻿using _AdventOfCode.AOC2023;
+﻿Console.WriteLine("Lets go...");
 
-Console.WriteLine("Lets go...");
+var lines = CoreFunctions.ReadFile(@"\inputfiles\day2.txt");
 
-//var lines = CoreFunctions.ReadFile(@"\inputfiles\day15.txt");
+_AdventOfCode.AOC2024.Day2.Run(lines);
 
-var lines = CoreFunctions.Reader();
-
-
-Day19.Run(lines);

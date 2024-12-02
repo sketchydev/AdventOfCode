@@ -8,9 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="inputfiles\Day15.txt">
+    <Compile Remove="AOC2023\**" />
+    <EmbeddedResource Remove="AOC2023\**" />
+    <None Remove="AOC2023\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="inputfiles\Day2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="inputfiles\Day1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AOC2023\" />
   </ItemGroup>
 
 </Project>

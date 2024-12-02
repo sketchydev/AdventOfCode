@@ -46,6 +46,10 @@ public static class CoreFunctions
 
     }
 
+    public static int[] RemoveAt(int[] source, int index)
+    {
+        return source.Where((val, idx) => idx != index).ToArray();
+    }
 
 
     public static double GetDistance(Point a, Point b)
