@@ -59,9 +59,31 @@
 
             Console.WriteLine($"Part 1: {xmasCount}");
 
-            
+
             //Part 2
 
+            xmasCount = 0;
+
+            for (int i = padding; i < linesArr.Length - padding; i++)
+            {
+                for (var j = padding; j < linesArr[i].Length - padding; j++)
+                {
+                    if (linesArr[i][j] == 'A')
+                    {
+                        var masCount = 0;
+
+                        if (linesArr[i - 1][j + 1] == 'M' && linesArr[i + 1][j - 1] == 'S') masCount++ ;  //upward-forward
+                        if (linesArr[i - 1][j - 1] == 'M' && linesArr[i + 1][j + 1] == 'S') masCount++ ;  //upward-backaward
+                        if (linesArr[i + 1][j + 1] == 'M' && linesArr[i - 1][j - 1] == 'S') masCount++ ; //downward-forward
+                        if (linesArr[i + 1][j - 1] == 'M' && linesArr[i - 1][j + 1] == 'S') masCount++ ; //downward-backward                      
+
+                        if(masCount ==2) xmasCount++;
+
+                    }
+                }
+            }
+
+            Console.WriteLine($"Part 2: {xmasCount}");
 
         }
     }
