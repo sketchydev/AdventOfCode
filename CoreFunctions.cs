@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 
+
 public static class CoreFunctions
 {
     public static List<string> Reader()
@@ -22,7 +23,8 @@ public static class CoreFunctions
         return lines;
     }
 
-    public static List<string> ReadFile(string filename) {
+    public static List<string> ReadFile(string filename)
+    {
 
         var lines = new List<string>();
 
@@ -32,12 +34,12 @@ public static class CoreFunctions
         string file = dir + filename;
 
         var sr = new StreamReader(file);
-        
-        var line = sr.ReadLine();        
+
+        var line = sr.ReadLine();
         while (line != null)
-        {            
+        {
             lines.Add(line);
-            
+
             line = sr.ReadLine();
         }
         //close the file
@@ -56,10 +58,8 @@ public static class CoreFunctions
     {
         return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
     }
-
-
 }
-    public class LCM {
+public class LCM {
 
         private List<long> set_of_numbers = [];
         private List<long> arg_copy = []; // arrays are passed by reference; make a copy.
@@ -149,6 +149,41 @@ public static class CoreFunctions
         }
     }
 
+public class SimpleMatrixItem
+{
+    public int Row { get; set; }
+    public int Column { get; set; }
+    public string Value { get; set; }
 
+    public override bool Equals(object obj)
+    {
+        if (obj is SimpleMatrixItem other)
+        {
+            return Row == other.Row && Column == other.Column && Value == other.Value;
+        }
+        return false;
+    }
 
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Row, Column, Value);
+    }
+}
+
+public class Grid
+{
+    public GridRow[] Rows { get; set; }
+}
+
+public class GridRow
+{
+    public int Index { get; set; }
+    public GridCell[] Cells { get; set; }
+}
+
+public class GridCell
+{
+    public int Index { get; set; }
+    public string Value { get; set; }
+}
 
