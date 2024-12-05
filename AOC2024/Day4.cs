@@ -3,41 +3,18 @@
     public class Day4
     {
         public static void Run(List<string> lines)
-        {
-            
-
+        {            
             var xmasCount = 0;
             var padding = 4;
             var linelength = lines[0].Length;
-
             var dotLine = new string('.', linelength);
-
             var paddedLines = new List<string>();
-
-            for ( var i = 0; i < padding; i++)
-            {
-                paddedLines.Add(dotLine);
-            }
+            for ( var i = 0; i < padding; i++) paddedLines.Add(dotLine);
             paddedLines.AddRange(lines);
-            for (var i = 0; i < padding; i++)
-            {
-                paddedLines.Add(dotLine);
-            }
-
+            for (var i = 0; i < padding; i++) paddedLines.Add(dotLine);            
             var linesArr = paddedLines.ToArray();           
-
-            for (int i = 0; i < paddedLines.Count; i++)
-            {
-                linesArr[i] = new string('.', padding) + paddedLines[i] + new string('.', padding);
-            }
-
-
-            foreach (var line in linesArr)
-            {
-                Console.WriteLine(line);
-            }
-
-
+            for (int i = 0; i < paddedLines.Count; i++) linesArr[i] = new string('.', padding) + paddedLines[i] + new string('.', padding);            
+            foreach (var line in linesArr) Console.WriteLine(line);
             for (int i = padding; i < linesArr.Length-padding; i++)
             {
                 for (var j = padding; j < linesArr[i].Length-padding; j++)
@@ -55,15 +32,9 @@
                     }
                 }
             }
-
-
             Console.WriteLine($"Part 1: {xmasCount}");
-
-
             //Part 2
-
             xmasCount = 0;
-
             for (int i = padding; i < linesArr.Length - padding; i++)
             {
                 for (var j = padding; j < linesArr[i].Length - padding; j++)
@@ -71,20 +42,15 @@
                     if (linesArr[i][j] == 'A')
                     {
                         var masCount = 0;
-
                         if (linesArr[i - 1][j + 1] == 'M' && linesArr[i + 1][j - 1] == 'S') masCount++ ;  //upward-forward
                         if (linesArr[i - 1][j - 1] == 'M' && linesArr[i + 1][j + 1] == 'S') masCount++ ;  //upward-backaward
                         if (linesArr[i + 1][j + 1] == 'M' && linesArr[i - 1][j - 1] == 'S') masCount++ ; //downward-forward
                         if (linesArr[i + 1][j - 1] == 'M' && linesArr[i - 1][j + 1] == 'S') masCount++ ; //downward-backward                      
-
                         if(masCount ==2) xmasCount++;
-
                     }
                 }
             }
-
             Console.WriteLine($"Part 2: {xmasCount}");
-
         }
     }
 }

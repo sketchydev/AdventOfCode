@@ -58,6 +58,22 @@ public static class CoreFunctions
     {
         return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
     }
+
+    public static int[] RandomizeIntArray(int[] array)
+    {
+        Random rng = new();
+        int n = array.Length;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            int value = array[k];
+            array[k] = array[n];
+            array[n] = value;
+        }
+
+        return array;
+    }
 }
 public class LCM {
 
@@ -186,4 +202,6 @@ public class GridCell
     public int Index { get; set; }
     public string Value { get; set; }
 }
+
+
 
