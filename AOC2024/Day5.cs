@@ -4,12 +4,9 @@
     {
         public static void Run(List<string> lines)
         {
-
             var answer = 0;
-
             var rules = new List<string>();
             var dataset = new List<string>();
-
             var writeRules = true;
 
             for (int i = 0; i < lines.Count; i++)
@@ -19,7 +16,6 @@
                     writeRules = false;
                     continue;
                 }
-
                 if (writeRules)
                 {
                     rules.Add(lines[i]);
@@ -28,13 +24,11 @@
                 {
                     dataset.Add(lines[i]);
                 }
-
             }
 
             //Part1
 
             var consolidatedRules = new Dictionary<int, List<int>>();
-
 
             foreach (var rule in rules)
             {
@@ -106,16 +100,11 @@
             Console.WriteLine($"Part 1: {answer}");
 
             //Part 2
-            answer = 0;
-
-            //using the rules, create a definitive order
-            //var allPagesWithRules = consolidatedRules.Keys.ToList();
+            answer = 0;                        
 
             foreach (var pagelist in incorrectPages)
             {
-
-
-                    var isValid = true;
+                bool isValid;
                 do {
                     isValid = true;
                     Console.WriteLine($"Checking {string.Join(",", pagelist)}");
@@ -152,19 +141,10 @@
                         if (!isValid) break;
                     }
                 } while (!isValid);
-
-
                 int midpointIndex = pagelist.Length / 2;
                     answer += pagelist[midpointIndex];
-
             }
-
-
-
             Console.WriteLine($"Part 2: {answer}");
-
         }
-
-
     }
 }
