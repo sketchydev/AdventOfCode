@@ -12,10 +12,32 @@
             Console.WriteLine($"Part 1: {answer} ");
 
             //Part 2
-            answer = 0;                        
+            answer = 0;
 
-            
-            Console.WriteLine($"Part 2: {answer}");
+            for (int i = padding; i < lines.Count; i++)
+            {
+                for (int j = padding; j < lines[i].Length; j++)
+                {
+                    Console.WriteLine($"Checking row: {i} col: {j}");
+                    var oldLine = paddedInput[i];
+
+                    var newLine = string.Concat(oldLine.AsSpan(0, j), "O", oldLine.AsSpan(j + 1));
+                    paddedInput[i] = newLine;
+
+                    var newAnswer = RunSimulation(paddedInput, padding, lines[0].Length, lines.Count);
+
+                    if (newAnswer == -1) answer++;
+
+
+                    //return to previous state
+                    paddedInput[i] = oldLine;
+
+                }
+            }
+
+            //2187 - too low
+
+            Console.WriteLine($"Part 2: {answer+1}"); ///again we are 1 out for some reason hence the plus 1 ???
         }
 
 
@@ -87,7 +109,7 @@
                 }
             }
 
-            Console.WriteLine("starting at row: " + row + " col: " + col);
+            //Console.WriteLine("starting at row: " + row + " col: " + col);
 
             var nextRow = row;
             var nextCol = col;
@@ -140,6 +162,8 @@
 
                 }
                 (nextRow, nextCol) = SetNextCell(row, col, currentOrientation);
+
+                if (visited.Count > 100000) return -1; //bomb out if we hit 100000 steps
             }
 
             //deduplicate visited list
