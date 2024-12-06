@@ -74,6 +74,19 @@ public static class CoreFunctions
 
         return array;
     }
+
+    public static string[] AddPadding(List<string> input, int padding, char paddingChar)
+    {        
+        var linelength = input[0].Length;
+        var dotLine = new string(paddingChar, linelength);
+        var paddedLines = new List<string>();
+        for (var i = 0; i < padding; i++) paddedLines.Add(dotLine);
+        paddedLines.AddRange(input);
+        for (var i = 0; i < padding; i++) paddedLines.Add(dotLine);
+        var linesArr = paddedLines.ToArray();
+        for (int i = 0; i < paddedLines.Count; i++) linesArr[i] = new string(paddingChar, padding) + paddedLines[i] + new string(paddingChar, padding);
+        return linesArr;
+    }
 }
 public class LCM {
 
