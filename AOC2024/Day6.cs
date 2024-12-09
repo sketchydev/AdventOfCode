@@ -35,8 +35,7 @@
                 }
             }
 
-            //2187 - too low
-
+            //
             Console.WriteLine($"Part 2: {answer+1}"); ///again we are 1 out for some reason hence the plus 1 ???
         }
 
@@ -109,8 +108,6 @@
                 }
             }
 
-            //Console.WriteLine("starting at row: " + row + " col: " + col);
-
             var nextRow = row;
             var nextCol = col;
             var currentOrientation = paddedInput[row][col];
@@ -163,7 +160,7 @@
                 }
                 (nextRow, nextCol) = SetNextCell(row, col, currentOrientation);
 
-                if (visited.Count > 100000) return -1; //bomb out if we hit 100000 steps
+                if (visited.Count > 100000) return -1; //bomb out if we hit 100000 steps; lets be honest this is not exactly the most precise thing...
             }
 
             //deduplicate visited list
