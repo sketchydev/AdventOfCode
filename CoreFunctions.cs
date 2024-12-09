@@ -76,7 +76,7 @@ public static class CoreFunctions
     }
 
     public static string[] AddPadding(List<string> input, int padding, char paddingChar)
-    {        
+    {
         var linelength = input[0].Length;
         var dotLine = new string(paddingChar, linelength);
         var paddedLines = new List<string>();
@@ -87,6 +87,25 @@ public static class CoreFunctions
         for (int i = 0; i < paddedLines.Count; i++) linesArr[i] = new string(paddingChar, padding) + paddedLines[i] + new string(paddingChar, padding);
         return linesArr;
     }
+
+
+    public static List<IEnumerable<T>> GeneratePairs<T>(IEnumerable<T> input)
+    {
+        var pairs = new List<IEnumerable<T>>();
+        var list = input.ToList();
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            for (int j = i + 1; j < list.Count; j++)
+            {
+                var pair = new List<T> { list[i], list[j] }.ToArray();
+                pairs.Add(pair);
+            }
+        }
+
+        return pairs;
+    }
+
 }
 public class LCM {
 
