@@ -48,6 +48,15 @@ public static class CoreFunctions
 
     }
 
+    public static bool PointAdjacentCheck(Point a, Point b)
+    {
+        if (a.X == b.X && a.Y == b.Y + 1) return true;
+        if (a.X == b.X && a.Y == b.Y - 1) return true;
+        if (a.X == b.X + 1 && a.Y == b.Y) return true;
+        if (a.X == b.X - 1 && a.Y == b.Y) return true;
+        return false;
+    }
+
     public static int[] RemoveAt(int[] source, int index)
     {
         return source.Where((val, idx) => idx != index).ToArray();
