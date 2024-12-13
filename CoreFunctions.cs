@@ -28,8 +28,7 @@ public static class CoreFunctions
 
         var lines = new List<string>();
 
-        string dir = Path.GetDirectoryName(
-            System.Reflection.Assembly.GetExecutingAssembly().Location);
+        string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         string file = dir + filename;
 
@@ -97,6 +96,44 @@ public static class CoreFunctions
         return linesArr;
     }
 
+
+    public static LinkedList<T> ConvertArrayToLinkedList<T>(T[] array)
+    {
+        LinkedList<T> linkedList = new();
+
+        foreach (T item in array)
+        {
+            linkedList.AddLast(item);
+        }
+
+        return linkedList;
+    }
+
+    public static int CountOccurrences<T>(LinkedList<T> list, T target)
+    {
+        LinkedListNode<T> current = list.First;
+        int count = 0;
+
+        while (current != null)
+        {
+            if (EqualityComparer<T>.Default.Equals(current.Value, target))
+            {
+                count++;
+            }
+            current = current.Next;
+        }
+
+        return count;
+    }
+
+    public static string[] SplitStringInHalf(string inputString)
+    {
+        int halfLength = inputString.Length / 2;
+        string firstHalf = inputString.Substring(0, halfLength);
+        string secondHalf = inputString.Substring(halfLength);
+
+        return [firstHalf, secondHalf];
+    }
 
     public static List<IEnumerable<T>> GeneratePairs<T>(IEnumerable<T> input)
     {

@@ -28,7 +28,6 @@
 
                     if (newAnswer == -1) answer++;
 
-
                     //return to previous state
                     paddedInput[i] = oldLine;
 

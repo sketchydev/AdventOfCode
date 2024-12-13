@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace _AdventOfCode.AOC2024
 {
@@ -120,29 +121,43 @@ namespace _AdventOfCode.AOC2024
 
         public static List<Point> GenerateAntinodesV2(Point[] nodeList, int xLim, int yLim)
         {
+            int xmin = -xLim, xmax = xLim, ymin = -yLim, ymax = yLim;
 
-            var distanceX = nodeList[0].X - nodeList[1].X;
-            var distanceY = nodeList[0].Y - nodeList[1].Y;
-            var distance = new Point(distanceX, distanceY);
+            int x1 = nodeList[0].X, y1 = nodeList[0].Y, x2 = nodeList[1].X, y2 = nodeList[1].Y;
+
+
+            int dx = Math.Abs(x2 - x1);
+            int dy = Math.Abs(y2 - y1);
+            int sx = x2 > x1 ? 1 : -1;
+            int sy = y2 > y1 ? 1 : -1;
+            int err = dx - dy;
 
             var points = new List<Point>();
 
-            do
+            while (true)
             {
-                points.Add(new Point(nodeList[0].X + distance.X, nodeList[0].Y + distance.Y));
-                points.Add(new Point(nodeList[1].X - distance.X, nodeList[1].Y - distance.Y));
+                points.Add(new Point(x1, y1));
 
+                if ((x1 >= xmax && sx > 0) || (x1 <= xmin && sx < 0) ||
+                    (y1 >= ymax && sy > 0) || (y1 <= ymin && sy < 0))
+                {
+                    break;
+                }
 
-                distanceX ++;
-                distanceY ++; 
-                distance = new Point(distanceX, distanceY);
-            } while ((distanceX < xLim && distanceY < yLim) && (distanceX >= 0 && distanceY >= 0));
+                int e2 = 2 * err;
+                if (e2 > -dy)
+                {
+                    err -= dy;
+                    x1 += sx;
+                }
+                if (e2 < dx)
+                {
+                    err += dx;
+                    y1 += sy;
+                }
+            }
 
-
-
-
-             
-            return points;
+            return points.Distinct().ToList();
         }
     }
 }
