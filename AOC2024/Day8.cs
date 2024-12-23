@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace _AdventOfCode.AOC2024
 {
