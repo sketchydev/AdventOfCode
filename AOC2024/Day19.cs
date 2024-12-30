@@ -7,6 +7,7 @@
             var availableDesigns = lines[0].Split(',').Select(x => x.Trim()).ToList();
 
             var part1Answer = 0;
+            var part2Answer = 0;
 
             for (int i = 2; i < lines.Count; i++)
             {
@@ -42,7 +43,7 @@
                     }
 
                     potentialSolutions.Clear();
-                    potentialSolutions.AddRange(tmpSolutions.Where(x => target.StartsWith(x)).ToList());
+                    potentialSolutions.AddRange(tmpSolutions.Where(x => target.StartsWith(x)).ToList().Distinct());
 
                     foreach (var sol in potentialSolutions)
                     {
@@ -50,6 +51,7 @@
                         {
                             Console.WriteLine($"Solution found for [{target}]");
                             part1Answer++;
+                            part2Answer += potentialSolutions.Count(); // clearly not the way to do this...
                             potentialSolutions.Clear();
                             break;
                         }
@@ -57,6 +59,7 @@
                 }
             }
             Console.WriteLine($"Part 1: {part1Answer}");
+            Console.WriteLine($"Part 1: {part2Answer}"); // 9186 = too low, 128378 = too low
         }
     }
 }
