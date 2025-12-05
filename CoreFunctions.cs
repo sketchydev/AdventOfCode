@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Numerics;
 
 
 public static class CoreFunctions
@@ -151,6 +152,31 @@ public static class CoreFunctions
 
         return pairs;
     }
+
+
+        public static IEnumerable<string> SplitByLength(string str, int maxLength)
+        {
+            for (int index = 0; index < str.Length; index += maxLength)
+            {
+                yield return str.Substring(index, Math.Min(maxLength, str.Length - index));
+            }
+        }
+
+    public static IEnumerable<long> RangeLong(long start, long count)
+    {
+        for (long i = 0; i < count; i++)
+        {
+            yield return start + i;
+        }
+    }
+
+    public static bool ArePointsAdjacent(Point a, Point b)
+    {
+        int dx = Math.Abs(a.X - b.X);
+        int dy = Math.Abs(a.Y - b.Y);
+        return dx <= 1 && dy <= 1 && (dx | dy) != 0;
+    }
+
 
 }
 public class LCM {

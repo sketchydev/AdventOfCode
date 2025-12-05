@@ -41,7 +41,7 @@
                 initialState += joined;
             }
 
-            //Console.WriteLine(initialState);
+            Console.WriteLine(initialState);
             
             //Part 1
 
@@ -66,11 +66,6 @@
                     swappedNodes.Add(swapnode.Value);
                 }
                 currentNode = currentNode.Previous;
-                //foreach (var c in part1List)
-                //{
-                //    Console.Write(c);
-                //}
-                //Console.WriteLine();
 
                 var checkNode = part1List.Find(".");
 
@@ -100,6 +95,96 @@
             }
             Console.WriteLine($"Part 1: {part1Answer}"); // wrong 89425419840
                                                          // right 6307275788409
+
+
+
+
+
+            //part 2
+            var part2List = new LinkedList<string>();
+            var fileStack = new Stack<string>();
+            var currentFile = "";
+            foreach (var c in initialState)
+            {
+                if (currentFile == "" || currentFile.Contains(c))
+                {
+                    currentFile += c;
+                }
+                else
+                {
+                    if(!currentFile.Contains('.')) fileStack.Push(currentFile);
+                    part2List.AddLast(currentFile);
+                    currentFile = c.ToString();
+                }                
+            }
+            part2List.AddLast(currentFile); //add last one
+            if (!currentFile.Contains('.')) fileStack.Push(currentFile); //add last one
+
+            
+            var part2FileId = fileStack.Count;
+
+            while (fileStack.Count >0)
+            {
+                var file = fileStack.Pop();                
+
+                var firstAvailableBlock = part2List.FirstOrDefault(x => x.Contains('.') && x.Length >= file.Length);
+
+                var isValid = true;
+
+                if (firstAvailableBlock != null)
+                {
+                    foreach (var item in part2List)
+                    {
+                        if (item == firstAvailableBlock) break;
+                        if (item == file)
+                        {
+                            isValid = false; // file appears before firstAvailableBlock so we skip
+                            break;  
+                        }
+                    }
+
+                    if (isValid)
+                    {
+                        if (firstAvailableBlock.Length == file.Length)
+                        {
+                            //swap
+                            var emptyblock = part2List.Find(firstAvailableBlock);
+                            var fileBlock = part2List.Find(file);
+                            (fileBlock.Value, emptyblock.Value) = (emptyblock.Value, fileBlock.Value);
+                        }
+                        else if (firstAvailableBlock.Length > file.Length)
+                        {
+                            var emptyblock = part2List.Find(firstAvailableBlock);
+                            var fileBlock = part2List.Find(file);
+
+                            var newblock = new string('.', firstAvailableBlock.Length - file.Length);
+                            var replacementBlock = new string('.', file.Length);
+
+                            emptyblock.Value = fileBlock.Value; // replace empty block with file block
+                            part2List.AddAfter(emptyblock, newblock); // add new empty block
+                            fileBlock.Value = replacementBlock; // replace file block with new empty block
+                        }
+                        //Write out current state
+                        foreach (var c in part2List)
+                        {
+                            Console.Write(c);
+                        }
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            posCounter = 0;
+            long part2Answer = 0;
+            foreach (var c in part2List)
+            {
+                if (!c.Contains("."))
+                {
+                    part2Answer += (long.Parse(c) * posCounter);
+                }
+                posCounter++;
+            }
+            Console.WriteLine($"Part 2: {part2Answer}");
 
 
         }

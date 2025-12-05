@@ -18,7 +18,7 @@
             {
                 for (int j = padding; j < lines[i].Length; j++)
                 {
-                    Console.WriteLine($"Checking row: {i} col: {j}");
+                    //Console.WriteLine($"Checking row: {i} col: {j}");
                     var oldLine = paddedInput[i];
 
                     var newLine = string.Concat(oldLine.AsSpan(0, j), "O", oldLine.AsSpan(j + 1));
