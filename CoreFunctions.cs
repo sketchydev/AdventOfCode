@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using System.Numerics;
+using System.Xml.Linq;
 
 
 public static class CoreFunctions
@@ -177,6 +177,102 @@ public static class CoreFunctions
         return dx <= 1 && dy <= 1 && (dx | dy) != 0;
     }
 
+    public static bool IsPointInPolygon(Point[] polygon, Point testPoint)
+    {
+        bool result = false;
+        int j = polygon.Length - 1; // The last vertex
+
+        for (int i = 0; i < polygon.Length; i++)
+        {
+            // 1. Check if the point's Y is between the edge's Y coordinates
+            // 2. Check if the point is to the Left of the line segment
+            if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y ||
+                polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+            {
+                if (polygon[i].X + (testPoint.Y - polygon[i].Y) /
+                   (double)(polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                {
+                    // Toggle the state
+                    result = !result;
+                }
+            }
+
+            // Save current point as 'previous' for next iteration
+            j = i;
+        }
+
+        return result;
+    }
+
+    public static IEnumerable<Point> GetPointsInRectangle(Point p1, Point p2)
+    {
+        // 1. Determine the boundaries
+        int minX = Math.Min(p1.X, p2.X);
+        int maxX = Math.Max(p1.X, p2.X);
+        int minY = Math.Min(p1.Y, p2.Y);
+        int maxY = Math.Max(p1.Y, p2.Y);
+
+        // 2. Iterate through every coordinate
+        // Using <= insures we include the points ON the lines
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                yield return new Point(x, y);
+            }
+        }
+    }
+
+    public static IEnumerable<Point> GetRectangleCorners(Point corner1, Point corner2)
+    {
+        var corner3 = new Point(corner1.X, corner2.Y);
+        var corner4 = new Point(corner2.X, corner1.Y);
+        return new List<Point> { corner1, corner2, corner3, corner4 };
+    }
+
+    public static IEnumerable<Point> GetPerimeterPoints(Point p1, Point p2)
+    {
+        // 1. Normalize coordinates to find strict bounds
+        // This ensures the logic works regardless of which corners were passed
+        // (e.g., Top-Left+Bottom-Right OR Top-Right+Bottom-Left)
+        int xMin = Math.Min(p1.X, p2.X);
+        int xMax = Math.Max(p1.X, p2.X);
+        int yMin = Math.Min(p1.Y, p2.Y);
+        int yMax = Math.Max(p1.Y, p2.Y);
+
+        // 2. Iterate the Horizontal rows (Top and Bottom)
+        for (int x = xMin; x <= xMax; x++)
+        {
+            // Top Edge
+            yield return new Point(x, yMin);
+
+            // Bottom Edge
+            // We check (yMin != yMax) to ensure we don't double-count 
+            // if the rectangle is actually a horizontal line (height 0).
+            if (yMin != yMax)
+            {
+                yield return new Point(x, yMax);
+            }
+        }
+
+        // 3. Iterate the Vertical columns (Left and Right)
+        // Note: We iterate from (yMin + 1) to (yMax - 1) to avoid 
+        // returning the corner points again, as they were handled in step 2.
+        for (int y = yMin + 1; y < yMax; y++)
+        {
+            // Left Edge
+            yield return new Point(xMin, y);
+
+            // Right Edge
+            // We check (xMin != xMax) to ensure we don't double-count 
+            // if the rectangle is a vertical line (width 0).
+            if (xMin != xMax)
+            {
+                yield return new Point(xMax, y);
+            }
+        }
+    }
+
 
 }
 public class LCM {
@@ -306,6 +402,10 @@ public class GridCell
     public int Index { get; set; }
     public string Value { get; set; }
 }
+
+
+
+
 
 
 

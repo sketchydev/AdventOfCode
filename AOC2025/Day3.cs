@@ -36,7 +36,7 @@
 
             }
 
-            //Part 1 - turn on exactly 12 batteries
+            //Part 2 - turn on exactly 12 batteries
             foreach (var line in lines)
             {
                 //Find the largest digit that leaves at least 11 digits remaining

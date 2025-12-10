@@ -59,8 +59,8 @@ namespace _AdventOfCode.AOC2025
             //sort by closest pairs
             distancePairs.Sort((a, b) => a.Item3.CompareTo(b.Item3));
 
-            for (int i = 0; i < 1000; i++)
-            //for (int i = 0; i < 10; i++)
+            //for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var pair = distancePairs[i];
                 Console.WriteLine($"Distance squared between {pair.Item1} and {pair.Item2} is {pair.Item3}");
@@ -118,10 +118,75 @@ namespace _AdventOfCode.AOC2025
             //Part1 answer
             Console.WriteLine($"Part 1: {part1}"); //122430            
 
+            //part2
+            circuits = [];            
+            
+            Console.WriteLine($"Distance Pairs count: {distancePairs.Count}");
+            var found = false;
+            for (int i = 0; i < distancePairs.Count; i++)
+            {                
+                var pair = distancePairs[i];
+                //Console.WriteLine($"Distance squared between {pair.Item1} and {pair.Item2} is {pair.Item3}");
 
-            //Part2 answer
+                //first pass, just add the first pair
+                if (circuits.Count == 0)
+                {
+                    circuits.Add([pair.Item1, pair.Item2]);
+                    continue;
+                }
+                var circuitAdded = false;
+                foreach (var circuit in circuits)
+                {
+                    if (circuit.Contains(pair.Item1))
+                    {
+                        circuit.Add(pair.Item2);
+                        circuitAdded = true;
+                        break;
+                    }
+                    if (circuit.Contains(pair.Item2))
+                    {
+                        circuit.Add(pair.Item1);
+                        circuitAdded = true;
+                        break;
+                    }
+                }
+                if (!circuitAdded) circuits.Add([pair.Item1, pair.Item2]);
 
-            Console.WriteLine($"Part 2: {part2}");
+
+                //consolidate circuits that share points
+
+                merged = false;
+                do
+                {
+                    merged = false;
+                    for (int j = 0; j < circuits.Count - 1; j++)
+                    {
+                        for (int k = j + 1; k < circuits.Count; k++)
+                        {
+                            if (circuits[j].Overlaps(circuits[k]))
+                            {
+                                circuits[j].UnionWith(circuits[k]);
+                                circuits.RemoveAt(k);
+                                merged = true;
+                                break;
+                            }
+                        }
+                        if (merged) break;
+                    }
+                } while (merged);
+
+                foreach (var circuit in circuits)
+                {
+                    if (circuit.Count == lines.Count)
+                    {
+                        part2 = (long)distancePairs[i].Item1.X * (long)distancePairs[i].Item2.X;
+                        found = true;
+                    }
+                }
+                if (found) break;
+            }
+            Console.WriteLine($"Part 2: {part2}"); //8135565324
+
         }
 
     }

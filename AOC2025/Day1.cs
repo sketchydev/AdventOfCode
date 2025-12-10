@@ -78,9 +78,7 @@
                             bruteForceClicks++;
                         }
                     }
-                }
-                
-
+                }               
             }
 
 
@@ -99,10 +97,5 @@
 
         }
 
-        private static int SignOrPositive(int x)
-        {
-            int s = Math.Sign(x);
-            return s == 0 ? 1 : s;
-        }
     }
 }
